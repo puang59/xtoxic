@@ -119,6 +119,7 @@ ${tweet.favorite_count} likes, ${tweet.reply_count} replies, ${
       
       If the user employs slurs or particularly offensive language, boost their toxicity level significantly! Remember, we want to keep it light-hearted but honest. Everyone has a little toxicity in them; let's embrace it with a smile!
       If the person is less toxic - around 10, then give them random value from 5 and below 20 to make it more fun! just aviode giving levels like 15 or 10, make it more fun and random!
+      Also try to give generally higher toxicity level but be in limits even though the tweets are not that toxic, just to make it more fun and interesting!
       `,
     },
     {
