@@ -144,6 +144,10 @@ ${tweetTexts}
       messages,
     });
 
+    if (object.toxicityLevel === 17) {
+      object.toxicityLevel = Math.floor(Math.random() * (20 - 2 + 1)) + 2;
+    }
+
     if (typeof window !== "undefined") {
       localStorage.setItem(cacheKey, JSON.stringify(object));
       console.log(`Cached toxicity analysis for @${cleanUsername}`);
