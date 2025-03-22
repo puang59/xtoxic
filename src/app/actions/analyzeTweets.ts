@@ -144,8 +144,12 @@ ${tweetTexts}
       messages,
     });
 
-    if (object.toxicityLevel === 17) {
+    if (object.toxicityLevel == 17) {
       object.toxicityLevel = Math.floor(Math.random() * (20 - 2 + 1)) + 2;
+    }
+
+    if (object.toxicityLevel === 67) {
+      object.toxicityLevel = Math.floor(Math.random() * (80 - 60 + 1)) + 60;
     }
 
     if (typeof window !== "undefined") {
