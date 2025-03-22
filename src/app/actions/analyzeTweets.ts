@@ -118,6 +118,7 @@ ${tweet.favorite_count} likes, ${tweet.reply_count} replies, ${
       Be objective and fair in your analysis. Consider both the content and the context of tweets. Avoid political bias — focus only on objective markers of toxicity like personal attacks, threats, slurs, etc.
       
       If the user employs slurs or particularly offensive language, boost their toxicity level significantly! Remember, we want to keep it light-hearted but honest. Everyone has a little toxicity in them; let's embrace it with a smile!
+      If ther person is less toxic - around 10, give them random value above 10 and below 20
       `,
     },
     {
