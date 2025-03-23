@@ -104,7 +104,7 @@ export default function AnalyzeToxicityPage() {
                 {isAnalyzing ? "Analyzing..." : "Analyze"}
               </button>
             </div>
-            {error && <p className="mt-2 text-red-500 text-sm">{error}</p>}
+            {error && <p className="mt-2 text-amber-500 text-sm">{error}</p>}
           </form>
 
           {isAnalyzing && (
@@ -181,7 +181,7 @@ export default function AnalyzeToxicityPage() {
                 rel="noopener noreferrer"
                 className="hover:text-gray-500 transition-colors"
               >
-                github.com/xtoxic
+                github.com/xtoxic ⭐
               </a>
               {" • "}
               <a
