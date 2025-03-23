@@ -26,6 +26,11 @@ export default function AnalyzeToxicityPage() {
   const [result, setResult] = useState<AnalysisResult | null>(null);
   const [error, setError] = useState("");
 
+  const handleExceed = (e: React.FormEvent<HTMLFormElement>) => {
+    e.preventDefault();
+    setError("xtoxic is currently unavailable due to exceeded API credits.");
+  };
+
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     setIsAnalyzing(true);
@@ -77,7 +82,7 @@ export default function AnalyzeToxicityPage() {
             because your x feed is a dumpster fire
           </p>
 
-          <form onSubmit={handleSubmit} className="mb-8">
+          <form onSubmit={handleExceed} className="mb-8">
             <div className="flex gap-2">
               <div className="relative flex-grow">
                 <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
