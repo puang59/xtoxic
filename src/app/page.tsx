@@ -1,6 +1,8 @@
 "use client";
 import { useState } from "react";
 import { analyzeToxicity } from "./actions/analyzeTweets";
+import { motion, AnimatePresence } from "framer-motion";
+import ParticleBackground from "@/components/ParticleBackground";
 
 type AnalysisResult = {
   toxicityLevel: number;
@@ -56,11 +58,11 @@ export default function AnalyzeToxicityPage() {
   };
 
   const getToxicityColor = (level: number) => {
-    if (level < 20) return "#22c55e";
-    if (level < 40) return "#eab308";
-    if (level < 60) return "#f97316";
-    if (level < 80) return "#ef4444";
-    return "#a855f7";
+    if (level < 20) return "#0ea5e9";
+    if (level < 40) return "#2563eb";
+    if (level < 60) return "#1d4ed8";
+    if (level < 80) return "#1e40af";
+    return "#312e81";
   };
 
   const getToxicityDescription = (level: number) => {
@@ -72,130 +74,180 @@ export default function AnalyzeToxicityPage() {
   };
 
   return (
-    <main className="flex flex-col min-h-screen bg-white">
-      <div className="flex-grow flex flex-col items-center justify-center py-8">
-        <div className="max-w-md w-full mx-auto px-6">
-          <h1 className="text-4xl font-bold text-gray-900 mb-2 text-center">
-            xtoxic
+    <main className="relative min-h-screen overflow-hidden bg-[#0a0a0a]">
+      <ParticleBackground />
+
+      {/* New layout structure */}
+      <div className="relative z-10 min-h-screen">
+        {/* Header - Now centered at the top */}
+        <motion.div
+          initial={{ opacity: 0, y: -20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="pt-12 pb-6 text-center"
+        >
+          <h1 className="text-7xl font-black tracking-tighter inline-block">
+            <span className="block text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-sky-300">
+              xtoxic
+            </span>
           </h1>
-          <p className="text-sm text-gray-500 font-medium mb-8 text-center">
-            because your x feed is a dumpster fire
+          <p className="text-blue-200 text-lg font-light mt-2">
+            measuring the toxicity in your digital footprint
           </p>
+        </motion.div>
 
-          <form onSubmit={handleSubmit} className="mb-8">
-            <div className="flex gap-2">
-              <div className="relative flex-grow">
-                <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
-                  @
-                </span>
-                <input
-                  type="text"
-                  value={username}
-                  onChange={(e) => setUsername(e.target.value)}
-                  placeholder="username"
-                  className="w-full pl-8 pr-3 py-3 border-0 bg-gray-100 rounded-xl focus:ring-2 focus:ring-purple-500 focus:outline-none transition-all"
-                />
-              </div>
-              <button
-                type="submit"
-                disabled={isAnalyzing || !username.trim()}
-                className="px-4 py-3 bg-purple-600 text-white font-medium rounded-xl hover:bg-purple-700 disabled:opacity-50 disabled:cursor-not-allowed transition-all"
-              >
-                {isAnalyzing ? "Analyzing..." : "Analyze"}
-              </button>
-            </div>
-            {error && <p className="mt-2 text-amber-500 text-sm">{error}</p>}
-          </form>
-
-          {isAnalyzing && (
-            <div className="flex justify-center py-8">
-              <div className="flex flex-col items-center">
-                <div className="w-10 h-10 border-4 border-gray-200 border-t-purple-600 rounded-full animate-spin"></div>
-                <p className="mt-4 text-gray-500 text-sm">
-                  Analyzing tweets...
-                </p>
-              </div>
-            </div>
-          )}
-
-          {result && !isAnalyzing && (
-            <div className="bg-gray-50 rounded-xl p-5 border border-gray-100">
-              <div className="mb-6">
-                <div className="flex justify-between items-center mb-3">
-                  <h2 className="text-sm font-medium text-gray-600">
-                    Toxicity Level
-                  </h2>
-                  <span
-                    className="text-sm font-semibold px-3 py-1 rounded-full"
-                    style={{
-                      backgroundColor: `${getToxicityColor(
-                        result.toxicityLevel,
-                      )}20`,
-                      color: getToxicityColor(result.toxicityLevel),
-                    }}
-                  >
-                    {result.toxicityLevel}/100
+        {/* Main content - Centered with max width */}
+        <div className="max-w-2xl mx-auto px-4 py-8">
+          {/* Input Card */}
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="backdrop-blur-xl bg-white/5 p-8 rounded-3xl border border-blue-500/20 shadow-[0_0_25px_rgba(59,130,246,0.1)]"
+          >
+            <form onSubmit={handleSubmit} className="space-y-6">
+              <div className="relative group">
+                <div className="absolute -inset-0.5 bg-gradient-to-r from-blue-500 to-sky-500 rounded-2xl blur opacity-30 group-hover:opacity-75 transition duration-1000"></div>
+                <div className="relative">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-blue-300">
+                    @
                   </span>
+                  <input
+                    type="text"
+                    value={username}
+                    onChange={(e) => setUsername(e.target.value)}
+                    placeholder="username"
+                    className="w-full pl-10 pr-4 py-4 bg-black/40 border border-blue-500/20 rounded-xl focus:outline-none focus:ring-2 focus:ring-blue-500 text-white placeholder-blue-300"
+                  />
                 </div>
-
-                <div className="w-full h-3 bg-gray-200 rounded-full overflow-hidden">
-                  <div
-                    className="h-full rounded-full transition-all duration-700 ease-out"
-                    style={{
-                      width: `${result.toxicityLevel}%`,
-                      backgroundColor: getToxicityColor(result.toxicityLevel),
-                    }}
-                  ></div>
-                </div>
-
-                <p className="mt-3 text-sm text-gray-600">
-                  {getToxicityDescription(result.toxicityLevel)}
-                </p>
               </div>
 
-              <div className="text-sm text-gray-600 border-t border-gray-200 pt-4">
-                <p className="leading-relaxed">
-                  {result.explanation.split("\n")[0]}
-                </p>
-              </div>
-            </div>
-          )}
-        </div>
-      </div>
-
-      <footer className="w-full py-4 mt-auto border-t border-gray-100">
-        <div className="max-w-md mx-auto text-center text-xs text-gray-400">
-          <p>
-            <span className="flex items-center justify-center gap-1">
-              <svg
-                className="w-3 h-3"
-                xmlns="http://www.w3.org/2000/svg"
-                viewBox="0 0 24 24"
-                fill="currentColor"
+              <motion.button
+                whileHover={{
+                  scale: 1.02,
+                  boxShadow: "0 0 30px rgba(59,130,246,0.3)",
+                }}
+                whileTap={{ scale: 0.98 }}
+                disabled={isAnalyzing || !username.trim()}
+                className="w-full py-4 bg-gradient-to-r from-blue-600 to-sky-500 rounded-xl font-medium shadow-lg disabled:opacity-50 disabled:cursor-not-allowed transition-all duration-200"
               >
+                {isAnalyzing ? (
+                  <span className="flex items-center justify-center gap-2">
+                    <motion.div
+                      animate={{ rotate: 360 }}
+                      transition={{
+                        duration: 1,
+                        repeat: Infinity,
+                        ease: "linear",
+                      }}
+                      className="w-5 h-5 border-2 border-white/30 border-t-white rounded-full"
+                    />
+                    Analyzing...
+                  </span>
+                ) : (
+                  "Analyze"
+                )}
+              </motion.button>
+            </form>
+
+            <AnimatePresence>
+              {error && (
+                <motion.p
+                  initial={{ opacity: 0, y: 10 }}
+                  animate={{ opacity: 1, y: 0 }}
+                  exit={{ opacity: 0 }}
+                  className="mt-4 text-blue-300 text-center"
+                >
+                  {error}
+                </motion.p>
+              )}
+            </AnimatePresence>
+          </motion.div>
+
+          {/* Results Card - Now appears below input */}
+          <AnimatePresence>
+            {result && !isAnalyzing && (
+              <motion.div
+                initial={{ opacity: 0, scale: 0.95 }}
+                animate={{ opacity: 1, scale: 1 }}
+                exit={{ opacity: 0, scale: 0.95 }}
+                className="mt-8 backdrop-blur-xl bg-white/5 p-8 rounded-3xl border border-blue-500/20 shadow-[0_0_25px_rgba(59,130,246,0.1)]"
+              >
+                <div className="space-y-6">
+                  {/* Toxicity Score Circle */}
+                  <div className="flex flex-col items-center mb-6">
+                    <motion.div
+                      initial={{ scale: 0 }}
+                      animate={{ scale: 1 }}
+                      className="relative w-32 h-32 mb-4"
+                    >
+                      <div className="absolute inset-0 flex items-center justify-center">
+                        <span
+                          className="text-4xl font-black"
+                          style={{
+                            color: getToxicityColor(result.toxicityLevel),
+                          }}
+                        >
+                          {result.toxicityLevel}
+                        </span>
+                      </div>
+                      <svg className="w-full h-full -rotate-90">
+                        <circle
+                          cx="64"
+                          cy="64"
+                          r="60"
+                          className="stroke-black/40 fill-none"
+                          strokeWidth="8"
+                        />
+                        <motion.circle
+                          cx="64"
+                          cy="64"
+                          r="60"
+                          className="fill-none"
+                          strokeWidth="8"
+                          initial={{ pathLength: 0 }}
+                          animate={{ pathLength: result.toxicityLevel / 100 }}
+                          style={{
+                            stroke: getToxicityColor(result.toxicityLevel),
+                          }}
+                        />
+                      </svg>
+                    </motion.div>
+                    <h2 className="text-xl font-semibold text-blue-200 text-center">
+                      Toxicity Score
+                    </h2>
+                  </div>
+
+                  <p className="text-blue-200 text-center">
+                    {getToxicityDescription(result.toxicityLevel)}
+                  </p>
+
+                  <div className="pt-6 border-t border-white/10">
+                    <p className="text-blue-200 leading-relaxed text-center">
+                      {result.explanation.split("\n")[0]}
+                    </p>
+                  </div>
+                </div>
+              </motion.div>
+            )}
+          </AnimatePresence>
+        </div>
+
+        {/* Footer - Stays at bottom */}
+        <footer className="fixed bottom-0 left-0 w-full py-4 text-center text-blue-300/60 text-sm bg-black/20 backdrop-blur-sm">
+          <div className="flex items-center justify-center gap-4">
+            <a
+              href="https://github.com/puang59/xtoxic"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="hover:text-blue-200 transition-colors flex items-center gap-2"
+            >
+              <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor">
                 <path d="M12 0c-6.626 0-12 5.373-12 12 0 5.302 3.438 9.8 8.207 11.387.599.111.793-.261.793-.577v-2.234c-3.338.726-4.033-1.416-4.033-1.416-.546-1.387-1.333-1.756-1.333-1.756-1.089-.745.083-.729.083-.729 1.205.084 1.839 1.237 1.839 1.237 1.07 1.834 2.807 1.304 3.492.997.107-.775.418-1.305.762-1.604-2.665-.305-5.467-1.334-5.467-5.931 0-1.311.469-2.381 1.236-3.221-.124-.303-.535-1.524.117-3.176 0 0 1.008-.322 3.301 1.23.957-.266 1.983-.399 3.003-.404 1.02.005 2.047.138 3.006.404 2.291-1.552 3.297-1.23 3.297-1.23.653 1.653.242 2.874.118 3.176.77.84 1.235 1.911 1.235 3.221 0 4.609-2.807 5.624-5.479 5.921.43.372.823 1.102.823 2.222v3.293c0 .319.192.694.801.576 4.765-1.589 8.199-6.086 8.199-11.386 0-6.627-5.373-12-12-12z" />
               </svg>
-              <a
-                href="https://github.com/puang59/xtoxic"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-gray-500 transition-colors"
-              >
-                github.com/xtoxic ⭐
-              </a>
-              {" • "}
-              <a
-                href="https://twitter.com/kovis0"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="hover:text-gray-500 transition-colors"
-              >
-                @kovis0
-              </a>
-            </span>
-          </p>
-        </div>
-      </footer>
+              Star on GitHub
+            </a>
+          </div>
+        </footer>
+      </div>
     </main>
   );
 }
