@@ -82,7 +82,7 @@ export default function AnalyzeToxicityPage() {
             because your x feed is a dumpster fire
           </p>
 
-          <form onSubmit={handleExceed} className="mb-8">
+          <form onSubmit={handleSubmit} className="mb-8">
             <div className="flex gap-2">
               <div className="relative flex-grow">
                 <span className="absolute inset-y-0 left-0 flex items-center pl-3 text-gray-400">
@@ -129,7 +129,7 @@ export default function AnalyzeToxicityPage() {
                     className="text-sm font-semibold px-3 py-1 rounded-full"
                     style={{
                       backgroundColor: `${getToxicityColor(
-                        result.toxicityLevel
+                        result.toxicityLevel,
                       )}20`,
                       color: getToxicityColor(result.toxicityLevel),
                     }}
